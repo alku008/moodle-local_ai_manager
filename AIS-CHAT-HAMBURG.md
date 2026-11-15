@@ -17,9 +17,10 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    Moodle zerlegt sie in Abschnitte und berechnet Embeddings über `POST /v1/embeddings` der AIS.chat-API (Modell `BAAI/bge-m3`).
    Bei jeder Chat-Frage gehen nur die 4 passendsten Abschnitte mit der Persona-Anweisung an die KI (Kosinus-Ähnlichkeit + Wortvergleich +
    Bonus für genannte Aufgabennummern; ohne Embedding-Modell nur Wortvergleich). PDF über `pdftotext` oder den mitgelieferten PHP-Leser
-   smalot/pdfparser 2.13.1 (LGPL-3.0, `thirdparty/pdfparser`). Neue Tabelle `block_ai_chat_personachunks`.
-   **Wissensdateien pro Kurs:** Lehrkräfte laden sie im KI-Kontrollzentrum hoch (Knopf „📚 Dateien hochladen und verwalten“); sie gelten im
-   Chat des Kurses immer, mit und ohne Persona.
+   smalot/pdfparser 2.13.1 (LGPL-3.0, `thirdparty/pdfparser`). Neue Tabelle `block_ai_chat_wissen`.
+   **Zwei Orte, klar beschriftet:** an der Persona („🌐 gilt in allen Kursen mit dieser Persona“) und im KI-Kontrollzentrum
+   (Knopf „📚 Dateien hochladen und verwalten“, „📍 gilt nur in diesem Kurs, für jede Persona“). Bei einer Frage gehen die besten
+   Abschnitte aus beiden mit.
 2. **📎 Datei im Chat anhängen** (block_ai_chat), auch für Lernende: Text-, Code- und Notebook-Dateien werden im Browser gelesen und mit
    der Frage geschickt; im Verlauf steht nur „📎 Dateiname“. Grenzen prüft auch der Server.
 3. **Einstellungen der Administration** (Website-Administration → Plugins → Blöcke → KI-Chat): Wissensdateien pro Kurs und pro Persona, MB je Datei,
