@@ -18,13 +18,16 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    Bei jeder Chat-Frage gehen nur die 4 passendsten Abschnitte mit der Persona-Anweisung an die KI (Kosinus-Ähnlichkeit + Wortvergleich +
    Bonus für genannte Aufgabennummern; ohne Embedding-Modell nur Wortvergleich). PDF über `pdftotext` oder den mitgelieferten PHP-Leser
    smalot/pdfparser 2.13.1 (LGPL-3.0, `thirdparty/pdfparser`). Neue Tabelle `block_ai_chat_personachunks`.
+   **Wissensdateien pro Kurs:** Lehrkräfte laden sie im KI-Kontrollzentrum hoch (Knopf „📚 Dateien hochladen und verwalten“); sie gelten im
+   Chat des Kurses immer, mit und ohne Persona.
 2. **📎 Datei im Chat anhängen** (block_ai_chat), auch für Lernende: Text-, Code- und Notebook-Dateien werden im Browser gelesen und mit
    der Frage geschickt; im Verlauf steht nur „📎 Dateiname“. Grenzen prüft auch der Server.
-3. **Einstellungen der Administration** (Website-Administration → Plugins → Blöcke → KI-Chat): Wissensdateien pro Persona, MB je Datei,
+3. **Einstellungen der Administration** (Website-Administration → Plugins → Blöcke → KI-Chat): Wissensdateien pro Kurs und pro Persona, MB je Datei,
    Embedding-Modell (mit Statusanzeige), Dateien im Chat an/aus, Anhänge pro Person und Tag, Zeichen je Anhang.
 4. **Kontrollzentrum** (block_ai_control): Ablaufdatum-Fehler (01.01.1970) behoben; Anfragen-Limit pro Kurs für Lernende (bis zur Vorgabe
    der Administration); KI-Modell pro Kurs; Einstellung, welche Verbindungen Lehrkräfte wählen dürfen.
-5. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
+5. **✦-Knopf** (block_ai_chat): z-index 1045, damit er nicht hinter der rechten Seitenleiste liegt.
+6. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
    sperrt den Chat mit Hinweis, statt ihn auszublenden.
 
 Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: Erfahrungen und Änderungsvorschläge“ (Abschnitte 1–10).
