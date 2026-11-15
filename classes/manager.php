@@ -171,6 +171,19 @@ class manager {
             );
         }
 
+        // Lokale Erweiterung (15.11.2026): andere Plugins dürfen eine andere KI-Verbindung des Mandanten wählen
+        // (z. B. das KI-Kontrollzentrum ein Modell pro Kurs). Nur aktive Verbindungen desselben Mandanten.
+        $overridehook = new \local_ai_manager\hook\connector_instance_override($userinfo, $context, $this->purpose);
+        \core\di::get(\core\hook\manager::class)->dispatch($overridehook);
+        if ($overridehook->get_instanceid()) {
+            $overrideinstance = $connectorfactory->get_connector_instance_by_id($overridehook->get_instanceid());
+            if ($overrideinstance && $overrideinstance->is_enabled()
+                    && $overrideinstance->get_tenant() === $this->configmanager->get_tenant()->get_identifier()) {
+                $connectorclassname = '\\aitool_' . $overrideinstance->get_connector() . '\\connector';
+                $this->connector = new $connectorclassname($overrideinstance);
+            }
+        }
+
         if (intval($this->configmanager->get_max_requests($this->purpose, $userinfo->get_role())) === 0) {
             return prompt_response::create_from_error(403, get_string('error_http403usertype', 'local_ai_manager'), '');
         }

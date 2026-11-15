@@ -594,7 +594,9 @@ class ai_manager_utils {
             if (!$restrictionhook->is_allowed()) {
                 $purposes[] = [
                     'purpose' => $purpose,
-                    'available' => self::AVAILABILITY_HIDDEN,
+                    // Lokal (15.11.2026): Code 429 (Kurs-Limit im KI-Kontrollzentrum aufgebraucht) nur sperren statt ausblenden,
+                    // damit Lernende den Hinweis „Danach geht es wieder weiter“ sehen statt eines verschwundenen Chats.
+                    'available' => $restrictionhook->get_code() === 429 ? self::AVAILABILITY_DISABLED : self::AVAILABILITY_HIDDEN,
                     'errormessage' => $restrictionhook->get_message(),
                 ];
                 continue;
