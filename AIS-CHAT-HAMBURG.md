@@ -27,7 +27,8 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    Embedding-Modell (mit Statusanzeige), Dateien im Chat an/aus, Anhänge pro Person und Tag, Zeichen je Anhang.
 4. **Kontrollzentrum** (block_ai_control): Ablaufdatum-Fehler (01.01.1970) behoben; Anfragen-Limit pro Kurs für Lernende (bis zur Vorgabe
    der Administration); KI-Modell pro Kurs; Einstellung, welche Verbindungen Lehrkräfte wählen dürfen.
-5. **✦-Knopf** (block_ai_chat): z-index 1045, damit er nicht hinter der rechten Seitenleiste liegt.
+5. **✦-Knopf und Chatfenster** (block_ai_chat): Knopf über der rechten Seitenleiste (z-index 1045); im Fenster Persona-Name als Titel,
+   Kurzbeschreibung darunter, Menü mit ⋮, KI-Hinweise klein unter der Eingabe und einmal ausführlich beim ersten Öffnen.
 6. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
    sperrt den Chat mit Hinweis, statt ihn auszublenden.
 
