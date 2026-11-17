@@ -48,6 +48,13 @@ Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: 
 5. Optional: **„AIS.chat“ statt „Telli“ anzeigen** – Website-Administration → Sprache → Sprachanpassung → Deutsch → Komponente `aitool_telli`:
    `pluginname` = „AIS.chat“, in `adddescription`, `baseurlsettingdesc`, `err_retrievingmodels`, `getconsumptiontask`, `privacy:metadata`
    „Telli-API“ durch „AIS.chat-API“ ersetzen. Der technische Name `aitool_telli` bleibt (AIS.chat nutzt die frühere telli-API).
+   Ebenso in `local_ai_manager` „Tenant“ durch „Schule“ ersetzen (z. B. `tenantconfig_heading` = „KI an Ihrer Schule“,
+   „Tenant-Manager“ → „KI-Verwaltung Ihrer Schule“). Fertige Fassungen beider Anpassungen liegen im ZIP-Paket (`sprachanpassung/`).
+
+## Für Lehrkräfte: AIS.chat-Dialogpartner als Persona
+
+Die AIS.chat-Schnittstelle liefert nur Sprachmodelle, keine Dialogpartner. Wie man einen Dialogpartner (Anweisung + Wissensdateien)
+als Persona im KI-Chat nachbaut: `ANLEITUNG_DIALOGPARTNER_ALS_PERSONA.md` (im Zweig von block_ai_chat und im ZIP-Paket).
 
 ## Vor dem Einsatz: bitte `grunt amd` ausführen
 
