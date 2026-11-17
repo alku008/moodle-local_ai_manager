@@ -176,7 +176,11 @@ class manager {
         $overridehook = new \local_ai_manager\hook\connector_instance_override($userinfo, $context, $this->purpose);
         \core\di::get(\core\hook\manager::class)->dispatch($overridehook);
         if ($overridehook->get_instanceid()) {
-            $overrideinstance = $connectorfactory->get_connector_instance_by_id($overridehook->get_instanceid());
+            try {
+                $overrideinstance = $connectorfactory->get_connector_instance_by_id($overridehook->get_instanceid());
+            } catch (\Throwable $e) {
+                $overrideinstance = null;   // Verbindung gelöscht (z. B. nach einer Kurswiederherstellung): Vorgabe verwenden.
+            }
             if ($overrideinstance && $overrideinstance->is_enabled()
                     && $overrideinstance->get_tenant() === $this->configmanager->get_tenant()->get_identifier()) {
                 $connectorclassname = '\\aitool_' . $overrideinstance->get_connector() . '\\connector';
