@@ -47,6 +47,13 @@ if ($hassiteconfig) {
     );
 
 
+    // Lokal (AIS.chat Hamburg, 17.11.2026): Modelle des API-Schlüssels übernehmen (Modellliste, Verbindungen, Kontrollzentrum).
+    $settings->add(new admin_setting_description('aitool_telli/modelleuebernehmenlink',
+        new lang_string('modelleuebernehmen', 'aitool_telli'),
+        new lang_string('modelleuebernehmen_desc', 'aitool_telli') . '<br>' . html_writer::link(
+            new moodle_url('/local/ai_manager/tools/telli/modelle_uebernehmen.php'),
+            get_string('modelleuebernehmen', 'aitool_telli'), ['class' => 'btn btn-secondary mt-2'])));
+
     // Build the list of models linked to the telli connector for the multiselect.
     $disabledmodelchoices = [];
     try {

@@ -36,6 +36,13 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    verwalten) und je Persona. Moodle ruft die Seiten beim Speichern und sonntags (Aufgabe `weblinks_aktualisieren`, nur bei Änderungen
    neu zerlegt) ab, nimmt den Hauptinhalt heraus (HTML ohne Navigation/Skripte, PDF, Text) und nutzt ihn wie eine Wissensdatei; die
    Quellenzeile verlinkt die Seite. Keine freie Websuche. Einstellung „Webseiten pro Kurs und pro Persona“ (0 = aus).
+10. **Grundanweisung für alle Chats (17.11.2026)** (block_ai_chat, Einstellung „Grundanweisung für alle Chats“): geht bei jeder Frage im
+   KI-Chat der Website mit, vor Persona und Wissensdateien, auch ohne Persona (z. B. Du-Anrede, keine fertigen Lösungen, Datenschutz-Hinweis).
+   Standard: leer. Kleine Modelle befolgen sie nur teilweise.
+11. **Modelle aus der API übernehmen (17.11.2026)** (aitool_telli, Knopf in den Einstellungen des Anschlusses →
+   `local/ai_manager/tools/telli/modelle_uebernehmen.php`): liest `GET /v1/models` des globalen Schlüssels, trägt Text- und Bildmodelle
+   in die Modellliste ein (ohne Embedding-Modelle), legt auf Wunsch je Textmodell eine Verbindung an und stellt sie im KI-Kontrollzentrum
+   zur Auswahl. Vorhandenes bleibt unverändert; die Zuordnung zu den Einsatzzwecken bleibt Sache der Schul-Konfiguration. Nur für Admins.
 8. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
    sperrt den Chat mit Hinweis, statt ihn auszublenden.
 
@@ -54,6 +61,10 @@ Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: 
    „Telli-API“ durch „AIS.chat-API“ ersetzen. Der technische Name `aitool_telli` bleibt (AIS.chat nutzt die frühere telli-API).
    Ebenso in `local_ai_manager` „Tenant“ durch „Schule“ ersetzen (z. B. `tenantconfig_heading` = „KI an Ihrer Schule“,
    „Tenant-Manager“ → „KI-Verwaltung Ihrer Schule“). Fertige Fassungen beider Anpassungen liegen im ZIP-Paket (`sprachanpassung/`).
+
+6. Optional: **„Infolink zu Personas“** (Einstellungen des KI-Chats) – erscheint im Chat als „Was ist eine Persona?“ für **alle, auch
+   Lernende**. Daher auf eine Seite verlinken, die alle öffnen können (Kurs mit Gastzugang, Aktivität „verfügbar, aber nicht auf der
+   Kursseite“). Vorlage: Seite „ℹ️ Was ist eine Persona? (KI-Chat)“ im KI-Führerschein-Übersichtskurs (Teil für Lernende und für Lehrkräfte).
 
 ## Für Lehrkräfte: AIS.chat-Dialogpartner als Persona
 
@@ -117,7 +128,7 @@ Sie laufen, aber `grunt amd` (bzw. die CI) sollte sie neu erzeugen.
 - *Zeitplan* nutzt die Zeitzone des Servers.
 - *Sprache*: Die neuen Texte sind überwiegend fest auf Deutsch geschrieben (Einstellungen mit Sprachstrings de/en). Für eine
   Veröffentlichung im Moodle-Verzeichnis müssten sie in Sprachstrings umgezogen werden.
-- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111704, block_ai_control 2025120403, local_ai_manager 2026102307).
+- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111705, block_ai_control 2025120403, local_ai_manager 2026102307, aitool_telli 2026050401).
   Bei einem späteren Wechsel zurück auf bycs-lp: Datenbank-Sicherung, Upgrade-Schritte prüfen.
 - *KI-Hinweis*: Der ausführliche Hinweis erscheint einmal je Browser, danach eine kleine Zeile unter der Eingabe – bitte prüfen, ob das der
   Transparenzpflicht (Art. 50 AI Act) in Ihrer Umsetzung genügt.
