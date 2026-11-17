@@ -45,6 +45,9 @@ Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: 
 3. Telli-Anschluss: Basis-URL der AIS.chat-API (bis vor `/v1`), globaler API-Schlüssel, Modelle. Für die Wissensdateien muss der Schlüssel
    zusätzlich ein Embedding-Modell freigegeben haben (Name in der KI-Chat-Einstellung „Embedding-Modell“, Standard `BAAI/bge-m3`).
 4. KI-Tools-Administration: Mandant einschalten, Verbindungen anlegen, Zwecke für beide Rollen zuordnen.
+5. Optional: **„AIS.chat“ statt „Telli“ anzeigen** – Website-Administration → Sprache → Sprachanpassung → Deutsch → Komponente `aitool_telli`:
+   `pluginname` = „AIS.chat“, in `adddescription`, `baseurlsettingdesc`, `err_retrievingmodels`, `getconsumptiontask`, `privacy:metadata`
+   „Telli-API“ durch „AIS.chat-API“ ersetzen. Der technische Name `aitool_telli` bleibt (AIS.chat nutzt die frühere telli-API).
 
 ## Vor dem Einsatz: bitte `grunt amd` ausführen
 
