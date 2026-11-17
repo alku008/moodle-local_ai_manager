@@ -66,6 +66,15 @@ Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: 
    Lernende**. Daher auf eine Seite verlinken, die alle öffnen können (Kurs mit Gastzugang, Aktivität „verfügbar, aber nicht auf der
    Kursseite“). Vorlage: Seite „ℹ️ Was ist eine Persona? (KI-Chat)“ im KI-Führerschein-Übersichtskurs (Teil für Lernende und für Lehrkräfte).
 
+7. Optional: **Lehrkräfte sollen die Fragen der Lernenden nicht einsehen** (Eigenverantwortung). Standardmäßig dürfen Trainer/innen
+   im Kurs alle Prompts lesen (Knopf „Prompts anzeigen“ im KI-Kontrollzentrum). Abschalten: Website-Administration → Nutzer/innen →
+   Rechte ändern → Rollen verwalten → „Trainer/in“ bearbeiten → „Erweitert zeigen“ → Filter `viewprompts` → „Nutzerprompts einsehen“
+   (`local/ai_manager:viewprompts`) auf **„Verbieten“** (dann kann es auch kein Kurs wieder erlauben) → Speichern; ebenso
+   „Trainer/in ohne Bearbeitungsrecht“. Der Knopf im Kontrollzentrum verschwindet. Der KI-Chat zeigt den Lernenden beim ersten Öffnen
+   (und unter „ⓘ Hinweise“), was gilt: „Deine Lehrkraft sieht nicht, was du die KI fragst …“ bzw. „… kann einsehen …“ – ermittelt aus
+   diesem Recht im jeweiligen Kurs. Die Fragen bleiben für Limits/Statistik im Protokoll des AI Managers; Aufbewahrung und Anonymisierung
+   stellt die Administration im AI Manager ein.
+
 ## Für Lehrkräfte: AIS.chat-Dialogpartner als Persona
 
 Die AIS.chat-Schnittstelle liefert nur Sprachmodelle, keine Dialogpartner. Wie man einen Dialogpartner (Anweisung + Wissensdateien)
@@ -128,7 +137,7 @@ Sie laufen, aber `grunt amd` (bzw. die CI) sollte sie neu erzeugen.
 - *Zeitplan* nutzt die Zeitzone des Servers.
 - *Sprache*: Die neuen Texte sind überwiegend fest auf Deutsch geschrieben (Einstellungen mit Sprachstrings de/en). Für eine
   Veröffentlichung im Moodle-Verzeichnis müssten sie in Sprachstrings umgezogen werden.
-- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111705, block_ai_control 2025120403, local_ai_manager 2026102307, aitool_telli 2026050401).
+- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111706, block_ai_control 2025120403, local_ai_manager 2026102307, aitool_telli 2026050401).
   Bei einem späteren Wechsel zurück auf bycs-lp: Datenbank-Sicherung, Upgrade-Schritte prüfen.
 - *KI-Hinweis*: Der ausführliche Hinweis erscheint einmal je Browser, danach eine kleine Zeile unter der Eingabe – bitte prüfen, ob das der
   Transparenzpflicht (Art. 50 AI Act) in Ihrer Umsetzung genügt.
