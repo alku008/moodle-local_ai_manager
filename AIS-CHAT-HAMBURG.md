@@ -29,7 +29,10 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    der Administration); KI-Modell pro Kurs; Einstellung, welche Verbindungen Lehrkräfte wählen dürfen.
 5. **✦-Knopf und Chatfenster** (block_ai_chat): Knopf über der rechten Seitenleiste (z-index 1045); im Fenster Persona-Name als Titel,
    Kurzbeschreibung darunter, Menü mit ⋮, KI-Hinweise klein unter der Eingabe und einmal ausführlich beim ersten Öffnen.
-6. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
+6. **Lernhilfen (17.11.2026):** Startvorschläge und gestufte Hilfe im Chat, Quellenzeile „📚 Aus den Kursunterlagen“, Seitenkontext,
+   Wissensdateien aus Kursinhalten erzeugen, Wissensdateien reisen mit Kurssicherungen; Personas anlegen nur mit Bearbeitungsrecht.
+7. **Kontrollzentrum (17.11.2026):** Persona für den Kurs, Themen-Auswertung der letzten 7 Tage, Zeitplan für Lernende, aus während Tests.
+8. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
    sperrt den Chat mit Hinweis, statt ihn auszublenden.
 
 Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: Erfahrungen und Änderungsvorschläge“ (Abschnitte 1–10).
