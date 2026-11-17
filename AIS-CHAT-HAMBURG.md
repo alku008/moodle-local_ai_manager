@@ -32,18 +32,18 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
 6. **Lernhilfen (17.11.2026):** Startvorschläge und gestufte Hilfe im Chat, Quellenzeile „📚 Aus den Kursunterlagen“, Seitenkontext,
    Wissensdateien aus Kursinhalten erzeugen, Wissensdateien reisen mit Kurssicherungen; Personas anlegen nur mit Bearbeitungsrecht.
 7. **Kontrollzentrum (17.11.2026):** Persona für den Kurs, Themen-Auswertung der letzten 7 Tage, Zeitplan für Lernende, aus während Tests.
-9. **Webseiten als Wissen (17.11.2026)** (block_ai_chat): bis zu 5 Adressen je Kurs (KI-Kontrollzentrum → Dateien und Webseiten
+8. **Webseiten als Wissen (17.11.2026)** (block_ai_chat): bis zu 5 Adressen je Kurs (KI-Kontrollzentrum → Dateien und Webseiten
    verwalten) und je Persona. Moodle ruft die Seiten beim Speichern und sonntags (Aufgabe `weblinks_aktualisieren`, nur bei Änderungen
    neu zerlegt) ab, nimmt den Hauptinhalt heraus (HTML ohne Navigation/Skripte, PDF, Text) und nutzt ihn wie eine Wissensdatei; die
    Quellenzeile verlinkt die Seite. Keine freie Websuche. Einstellung „Webseiten pro Kurs und pro Persona“ (0 = aus).
-10. **Grundanweisung für alle Chats (17.11.2026)** (block_ai_chat, Einstellung „Grundanweisung für alle Chats“): geht bei jeder Frage im
+9. **Grundanweisung für alle Chats (17.11.2026)** (block_ai_chat, Einstellung „Grundanweisung für alle Chats“): geht bei jeder Frage im
    KI-Chat der Website mit, vor Persona und Wissensdateien, auch ohne Persona (z. B. Du-Anrede, keine fertigen Lösungen, Datenschutz-Hinweis).
    Standard: leer. Kleine Modelle befolgen sie nur teilweise.
-11. **Modelle aus der API übernehmen (17.11.2026)** (aitool_telli, Knopf in den Einstellungen des Anschlusses →
+10. **Modelle aus der API übernehmen (17.11.2026)** (aitool_telli, Knopf in den Einstellungen des Anschlusses →
    `local/ai_manager/tools/telli/modelle_uebernehmen.php`): liest `GET /v1/models` des globalen Schlüssels, trägt Text- und Bildmodelle
    in die Modellliste ein (ohne Embedding-Modelle), legt auf Wunsch je Textmodell eine Verbindung an und stellt sie im KI-Kontrollzentrum
    zur Auswahl. Vorhandenes bleibt unverändert; die Zuordnung zu den Einsatzzwecken bleibt Sache der Schul-Konfiguration. Nur für Admins.
-8. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
+11. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
    sperrt den Chat mit Hinweis, statt ihn auszublenden.
 
 Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: Erfahrungen und Änderungsvorschläge“ (Abschnitte 1–10).
