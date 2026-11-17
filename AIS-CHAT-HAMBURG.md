@@ -32,6 +32,10 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
 6. **Lernhilfen (17.11.2026):** Startvorschläge und gestufte Hilfe im Chat, Quellenzeile „📚 Aus den Kursunterlagen“, Seitenkontext,
    Wissensdateien aus Kursinhalten erzeugen, Wissensdateien reisen mit Kurssicherungen; Personas anlegen nur mit Bearbeitungsrecht.
 7. **Kontrollzentrum (17.11.2026):** Persona für den Kurs, Themen-Auswertung der letzten 7 Tage, Zeitplan für Lernende, aus während Tests.
+9. **Webseiten als Wissen (17.11.2026)** (block_ai_chat): bis zu 5 Adressen je Kurs (KI-Kontrollzentrum → Dateien und Webseiten
+   verwalten) und je Persona. Moodle ruft die Seiten beim Speichern und sonntags (Aufgabe `weblinks_aktualisieren`, nur bei Änderungen
+   neu zerlegt) ab, nimmt den Hauptinhalt heraus (HTML ohne Navigation/Skripte, PDF, Text) und nutzt ihn wie eine Wissensdatei; die
+   Quellenzeile verlinkt die Seite. Keine freie Websuche. Einstellung „Webseiten pro Kurs und pro Persona“ (0 = aus).
 8. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
    sperrt den Chat mit Hinweis, statt ihn auszublenden.
 
@@ -88,6 +92,13 @@ Sie laufen, aber `grunt amd` (bzw. die CI) sollte sie neu erzeugen.
 - Kontrollzentrum: speichert keine personenbezogenen Daten (nur Kurseinstellungen). Die Themen-Auswertung zeigt nur Anzahlen und
   Abschnittstitel, Themen erst ab 5 fragenden Personen.
 
+**Webseiten-Abruf**
+- Über Moodles cURL-Klasse mit den Sperrlisten der Website (`curlsecurityblockedhosts`/`allowedport`): interne Adressen sind gesperrt
+  (getestet: localhost und Docker-Host → abgelehnt). Zeitlimit 20 s, höchstens 10 MB je Seite, 3 Weiterleitungen, 200 000 Zeichen Text.
+- Eintragen dürfen nur Lehrkräfte (Kurs) bzw. Personen mit `block/ai_chat:edit` (Persona). Es werden keine personenbezogenen Daten
+  gesendet; die Seiten erhalten nur den Abruf des Moodle-Servers (User-Agent „Moodle KI-Chat (Wissensquelle)“).
+- Textkopien der Seiten liegen nur in `block_ai_chat_wissen` für die Suche; Lernende sehen nur Zitate der KI und den Link.
+
 **Grenzen gegen Überlastung**
 - Wissensdateien: Anzahl und MB je Datei einstellbar (Standard 5 Dateien, 5 MB), höchstens 400 Abschnitte je Kurs bzw. Persona,
   DOCX entpackt höchstens 30 MB, PDF mit erhöhtem Speicher-/Zeitlimit.
@@ -106,7 +117,7 @@ Sie laufen, aber `grunt amd` (bzw. die CI) sollte sie neu erzeugen.
 - *Zeitplan* nutzt die Zeitzone des Servers.
 - *Sprache*: Die neuen Texte sind überwiegend fest auf Deutsch geschrieben (Einstellungen mit Sprachstrings de/en). Für eine
   Veröffentlichung im Moodle-Verzeichnis müssten sie in Sprachstrings umgezogen werden.
-- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111703, block_ai_control 2025120402, local_ai_manager 2026102307).
+- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111704, block_ai_control 2025120403, local_ai_manager 2026102307).
   Bei einem späteren Wechsel zurück auf bycs-lp: Datenbank-Sicherung, Upgrade-Schritte prüfen.
 - *KI-Hinweis*: Der ausführliche Hinweis erscheint einmal je Browser, danach eine kleine Zeile unter der Eingabe – bitte prüfen, ob das der
   Transparenzpflicht (Art. 50 AI Act) in Ihrer Umsetzung genügt.
