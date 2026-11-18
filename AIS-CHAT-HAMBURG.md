@@ -145,7 +145,7 @@ Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) er
 - *Zeitplan* nutzt die Zeitzone des Servers.
 - *Sprache*: Die neuen Texte sind überwiegend fest auf Deutsch geschrieben (Einstellungen mit Sprachstrings de/en). Für eine
   Veröffentlichung im Moodle-Verzeichnis müssten sie in Sprachstrings umgezogen werden.
-- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111801, block_ai_control 2025120407, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
+- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111802, block_ai_control 2025120408, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
   Bei einem späteren Wechsel zurück auf bycs-lp: Datenbank-Sicherung, Upgrade-Schritte prüfen.
 - *KI-Hinweis*: Der ausführliche Hinweis erscheint einmal je Browser, danach eine kleine Zeile unter der Eingabe – bitte prüfen, ob das der
   Transparenzpflicht (Art. 50 AI Act) in Ihrer Umsetzung genügt.
