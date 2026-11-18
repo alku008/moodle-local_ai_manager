@@ -80,12 +80,10 @@ Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: 
 Die AIS.chat-Schnittstelle liefert nur Sprachmodelle, keine Dialogpartner. Wie man einen Dialogpartner (Anweisung + Wissensdateien)
 als Persona im KI-Chat nachbaut: `ANLEITUNG_DIALOGPARTNER_ALS_PERSONA.md` (im Zweig von block_ai_chat und im ZIP-Paket).
 
-## Vor dem Einsatz: bitte `grunt amd` ausführen
+## JavaScript
 
-Lokal stand kein Node.js zur Verfügung. Die Build-Dateien der neuen bzw. geänderten JavaScript-Module sind deshalb **von Hand erstellt**:
-block_ai_chat `amd/build/{anhang,hinweis,vorschlaege}.min.js` (unveränderte Kopien von `amd/src`), `amd/build/{title,boxes}.min.js`
-(von Hand übertragen, Sourcemaps veraltet); block_ai_control `amd/build/ai_control_config.min.js` (Korrektur Ablaufdatum).
-Sie laufen, aber `grunt amd` (bzw. die CI) sollte sie neu erzeugen.
+Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) erzeugt und mit ESLint geprüft (18.11.2026);
+`amd/src` und `amd/build` passen zusammen, ein erneutes Bauen ist nicht nötig.
 
 ## Sicherheit und Datenschutz (geprüft 17.11.2026)
 
