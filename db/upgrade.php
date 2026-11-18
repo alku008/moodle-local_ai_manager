@@ -424,5 +424,15 @@ function xmldb_local_ai_manager_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026102301, 'local', 'ai_manager');
     }
 
+    if ($oldversion < 2026102308) {
+        // Local extension (AIS.chat Hamburg): models can create embeddings (new purpose aipurpose_embedding).
+        $table = new xmldb_table('local_ai_manager_model');
+        $field = new xmldb_field('embedding', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'stt');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        upgrade_plugin_savepoint(true, 2026102308, 'local', 'ai_manager');
+    }
+
     return true;
 }

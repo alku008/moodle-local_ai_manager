@@ -51,8 +51,8 @@ if ($basis === '' || $schluessel === '') {
         $api->init($schluessel, $basis);
         foreach ((array)json_decode($api->get_models_info(), true) as $m) {
             $art = $m['priceMetadata']['type'] ?? 'text';
-            if (empty($m['name']) || !empty($m['isDeleted']) || !in_array($art, ['text', 'image'])) {
-                continue;   // Embedding-Modelle, gelöschte Modelle
+            if (empty($m['name']) || !empty($m['isDeleted']) || !in_array($art, ['text', 'image', 'embedding'])) {
+                continue;   // gelöschte Modelle, unbekannte Arten
             }
             $formate = array_values(array_filter((array)($m['supportedImageFormats'] ?? []), 'is_string'));
             $apimodelle[(string)$m['name']] = [
@@ -89,7 +89,8 @@ if ($apimodelle && optional_param('uebernehmen', 0, PARAM_BOOL) && confirm_sessk
         if (!$modell) {
             $modell = (object)['name' => $name, 'displayname' => $info['displayname'], 'description' => 'AIS.chat',
                 'mimetypes' => $info['mimetypes'], 'textgeneration' => $info['art'] === 'text' ? 1 : 0, 'vision' => $info['vision'],
-                'imggen' => $info['art'] === 'image' ? 1 : 0, 'tts' => 0, 'stt' => 0, 'deprecated' => 0,
+                'imggen' => $info['art'] === 'image' ? 1 : 0, 'tts' => 0, 'stt' => 0,
+                'embedding' => $info['art'] === 'embedding' ? 1 : 0, 'deprecated' => 0,
                 'timecreated' => time(), 'timemodified' => time()];
             $modell->id = $DB->insert_record('local_ai_manager_model', $modell);
             $neu++;
@@ -98,18 +99,31 @@ if ($apimodelle && optional_param('uebernehmen', 0, PARAM_BOOL) && confirm_sessk
             $DB->insert_record('local_ai_manager_model_connector', ['modelid' => $modell->id, 'connector' => 'telli',
                 'timecreated' => time(), 'timemodified' => time()]);
         }
-        if (!empty($verbinden[$schl]) && $info['art'] === 'text' && !$verbindung((int)$modell->id)) {
+        if ($info['art'] === 'embedding' && (empty($modell->embedding) || !empty($modell->deprecated))) {
+            $DB->update_record('local_ai_manager_model', (object)['id' => $modell->id, 'embedding' => 1, 'textgeneration' => 0, 'deprecated' => 0]);   // vorhandenes Modell: Embedding, kein Textmodell
+        }
+        if (!empty($verbinden[$schl]) && in_array($info['art'], ['text', 'embedding']) && !$verbindung((int)$modell->id)) {
             $instanz = new \aitool_telli\instance();
             $instanz->set_name('AIS.chat – ' . $info['displayname']);
             $instanz->set_tenant($tenant);
             $instanz->set_connector('telli');
-            $instanz->set_endpoint($basis . '/v1/chat/completions');
+            $instanz->set_endpoint($basis . ($info['art'] === 'embedding' ? '/v1/embeddings' : '/v1/chat/completions'));
             $instanz->set_useglobalapikey(true);
             $instanz->set_apikey('');
             $instanz->set_model_id((int)$modell->id);
             $instanz->set_customfield1('0.7');
             $instanz->store();
             $verbindungen++;
+            // Embedding: dem Einsatzzweck „Embedding“ zuordnen, solange dort noch nichts eingestellt ist (beide Rollen).
+            if ($info['art'] === 'embedding') {
+                $konfig = \core\di::get(\local_ai_manager\local\config_manager::class);
+                foreach (['role_basic', 'role_extended'] as $rolle) {
+                    if (!$konfig->get_config('purpose_embedding_tool_' . $rolle)) {
+                        $konfig->set_config('purpose_embedding_tool_' . $rolle, (string)$instanz->get_id());
+                    }
+                }
+                continue;
+            }
             if ($freigeben) {
                 $freigabe[] = (string)$instanz->get_id();
             }
@@ -142,11 +156,12 @@ foreach ($apimodelle as $name => $info) {
     $vorhanden = $modell && $DB->record_exists('local_ai_manager_model_connector', ['modelid' => $modell->id, 'connector' => 'telli']);
     $vbname = $modell ? $verbindung((int)$modell->id) : null;
     $zeilen .= '<tr><td><strong>' . s($info['displayname']) . '</strong><br><code>' . s($name) . '</code></td>'
-        . '<td>' . ($info['art'] === 'image' ? get_string('modelleuebernehmen_bild', 'aitool_telli') : 'Text'
-            . ($info['vision'] ? ' + ' . get_string('modelleuebernehmen_bilderlesen', 'aitool_telli') : '')) . '</td>'
+        . '<td>' . ($info['art'] === 'embedding' ? get_string('modelleuebernehmen_embedding', 'aitool_telli')
+            : ($info['art'] === 'image' ? get_string('modelleuebernehmen_bild', 'aitool_telli') : 'Text'
+            . ($info['vision'] ? ' + ' . get_string('modelleuebernehmen_bilderlesen', 'aitool_telli') : ''))) . '</td>'
         . '<td>' . ($vorhanden ? '✅ ' . get_string('modelleuebernehmen_vorhanden', 'aitool_telli')
             : '<label><input type="checkbox" name="modell[' . $schl . ']" value="1" checked> ' . get_string('modelleuebernehmen_eintragen', 'aitool_telli') . '</label>')
-        . '</td><td>' . ($info['art'] !== 'text' ? '–' : ($vbname ? '✅ ' . s($vbname)
+        . '</td><td>' . ($info['art'] === 'image' ? '–' : ($vbname ? '✅ ' . s($vbname)
             : '<label><input type="checkbox" name="verbindung[' . $schl . ']" value="1"> ' . get_string('modelleuebernehmen_anlegen', 'aitool_telli') . '</label>'))
         . '</td></tr>';
 }

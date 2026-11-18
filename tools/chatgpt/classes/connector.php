@@ -149,6 +149,30 @@ class connector extends \local_ai_manager\base_connector {
         return $this->instance->get_endpoint() ?: self::DEFAULT_OPENAI_COMPLETIONS_ENDPOINT;
     }
 
+    /**
+     * Local extension (AIS.chat Hamburg): embeddings via the OpenAI-compatible endpoint /v1/embeddings.
+     *
+     * The instance endpoint may be the embeddings endpoint itself or a chat completions endpoint (it is then rewritten).
+     *
+     * @param string[] $texts the texts
+     * @param int $timeout timeout in seconds
+     * @return array|null vectors or null
+     */
+    #[\Override]
+    public function embed(array $texts, int $timeout = 10): ?array {
+        if (!$texts) {
+            return null;
+        }
+        $url = preg_replace('#/chat/completions/?$#', '/embeddings', $this->get_endpoint_url());
+        $result = $this->post_json_for_embedding($url, ['model' => $this->instance->get_model_name(),
+            'input' => array_values($texts)], $timeout);
+        if (empty($result['data']) || count($result['data']) !== count($texts)) {
+            return null;
+        }
+        usort($result['data'], fn($a, $b) => ($a['index'] ?? 0) <=> ($b['index'] ?? 0));
+        return array_map(fn($d) => $d['embedding'], $result['data']);
+    }
+
 
     #[\Override]
     protected function get_custom_error_message(int $code, ?ClientExceptionInterface $exception = null): string {

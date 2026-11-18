@@ -89,6 +89,18 @@ class connector extends base_connector {
         return $this->get_wrapped_connector()->execute_prompt_completion($result, $requestoptions);
     }
 
+    /**
+     * Local extension (AIS.chat Hamburg): embeddings through the wrapped OpenAI-compatible connector (/v1/embeddings).
+     *
+     * @param string[] $texts the texts
+     * @param int $timeout timeout in seconds
+     * @return array|null vectors or null
+     */
+    #[\Override]
+    public function embed(array $texts, int $timeout = 10): ?array {
+        return isset($this->wrappedconnector) ? $this->wrappedconnector->embed($texts, $timeout) : null;
+    }
+
     #[\Override]
     public function get_available_options(): array {
         // The endpoint v1/chat/completions does not support any options anyway, but also v1/images/generations of the Telli API
@@ -236,6 +248,10 @@ class connector extends base_connector {
         if (in_array($instance->get_model_id(), $this->get_model_ids_by_purpose()['imggen'])) {
             $this->wrappedconnector = $connectorfactory->get_connector_by_connectorname('dalle');
             $endpointsuffix = 'v1/images/generations';
+        } else if (in_array($instance->get_model_id(), $this->get_model_ids_by_purpose()['embedding'] ?? [])) {
+            // Local extension (AIS.chat Hamburg): embedding models use the OpenAI-compatible endpoint /v1/embeddings.
+            $this->wrappedconnector = $connectorfactory->get_connector_by_connectorname('chatgpt');
+            $endpointsuffix = 'v1/embeddings';
         } else {
             $this->wrappedconnector = $connectorfactory->get_connector_by_connectorname('chatgpt');
             $endpointsuffix = 'v1/chat/completions';

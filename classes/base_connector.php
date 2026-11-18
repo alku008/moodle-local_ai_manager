@@ -113,6 +113,10 @@ abstract class base_connector {
             if ($model->supports_vision() && array_key_exists('itt', $result)) {
                 $result['itt'][] = $name;
             }
+            // Local extension (AIS.chat Hamburg): embedding models for the purpose aipurpose_embedding.
+            if ($model->supports_embedding() && array_key_exists('embedding', $result)) {
+                $result['embedding'][] = $name;
+            }
         }
 
         return $result;
@@ -212,6 +216,46 @@ abstract class base_connector {
      * @return unit the unit enum
      */
     abstract public function get_unit(): unit;
+
+    /**
+     * Local extension (AIS.chat Hamburg): create embeddings for texts (purpose aipurpose_embedding).
+     *
+     * Connectors that support embeddings override this method. The default returns null (not supported).
+     *
+     * @param string[] $texts the texts
+     * @param int $timeout timeout in seconds
+     * @return array|null list of vectors (same order as $texts) or null if not supported or failed
+     */
+    public function embed(array $texts, int $timeout = 10): ?array {
+        return null;
+    }
+
+    /**
+     * Helper for embed(): POST JSON to an endpoint and return the decoded answer (or null on any error).
+     *
+     * @param string $url the endpoint
+     * @param array $data the request body
+     * @param int $timeout timeout in seconds
+     * @return array|null decoded JSON
+     */
+    protected function post_json_for_embedding(string $url, array $data, int $timeout): ?array {
+        if ($url === '') {
+            return null;
+        }
+        $client = new http_client(['timeout' => $timeout, 'connect_timeout' => min(5, $timeout),
+            'verify' => !empty(get_config('local_ai_manager', 'verifyssl'))]);
+        try {
+            $response = $client->post($url, ['headers' => $this->get_headers(), 'body' => json_encode($data)]);
+        } catch (\Throwable $e) {
+            debugging('local_ai_manager embeddings: ' . $e->getMessage(), DEBUG_DEVELOPER);
+            return null;
+        }
+        if ($response->getStatusCode() !== 200) {
+            return null;
+        }
+        $result = json_decode($response->getBody()->getContents(), true);
+        return is_array($result) ? $result : null;
+    }
 
     /**
      * Getter for the endpoint url.

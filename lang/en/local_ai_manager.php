@@ -340,3 +340,5 @@ $string['vertex_nocachestatus'] = 'Click the refresh button to query the current
 $string['vertexcachestatus'] = 'Query and change Vertex AI cache status';
 $string['viewprompts'] = 'View prompts';
 $string['within'] = 'in';
+// Local extension (AIS.chat Hamburg): embeddings.
+$string['model_embedding'] = 'Creates embeddings (vectors for searching in knowledge files)';

@@ -45,6 +45,14 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    zur Auswahl. Vorhandenes bleibt unverändert; die Zuordnung zu den Einsatzzwecken bleibt Sache der Schul-Konfiguration. Nur für Admins.
 11. **AI Manager** (local_ai_manager): neuer Haken `connector_instance_override` (Modell pro Kurs); aufgebrauchtes Kurs-Limit (Code 429)
    sperrt den Chat mit Hinweis, statt ihn auszublenden.
+12. **Einsatzzweck „Embedding“ (18.11.2026)** (local_ai_manager, neues Unter-Plugin `aipurpose_embedding`): Die Suche in den
+   Wissensdateien läuft über den AI Manager. Die Schule wählt in der Konfiguration eine Verbindung mit einem Embedding-Modell
+   (Modell-Merkmal „Erstellt Embeddings“, neue Spalte `embedding`), z. B. „AIS.chat – Embedding bge-m3“. Anschlüsse mit Embeddings:
+   telli/AIS.chat (`/v1/embeddings`), OpenAI/chatgpt, Ollama (`/api/embed`). Die Abfragen laufen über `\local_ai_manager\local\embedding`
+   erst, nachdem der KI-Chat die Chat-Freigabe geprüft hat; sie werden **nicht protokolliert und nicht auf die Anfragen-Limits
+   angerechnet**. Im KI-Kontrollzentrum gibt es dafür keinen eigenen Schalter. Ist der Einsatzzweck nicht eingerichtet, nutzt der KI-Chat
+   wie bisher den Telli-Anschluss direkt mit dem Modell aus seiner Einstellung (Statuszeile in den KI-Chat-Einstellungen zeigt den Weg).
+   „Modelle aus der API übernehmen“ erkennt Embedding-Modelle, legt die Verbindung an und ordnet sie dem Einsatzzweck zu.
 
 Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: Erfahrungen und Änderungsvorschläge“ (Abschnitte 1–10).
 
@@ -53,8 +61,9 @@ Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: 
 1. Die drei Zweige als ZIP herunterladen (Code → Download ZIP) oder klonen, Ordner umbenennen und ablegen:
    `local/ai_manager`, `blocks/ai_chat`, `blocks/ai_control`; dazu `tiny_ai` aus bycs-lp in `lib/editor/tiny/plugins/ai`.
 2. Website-Administration → Mitteilungen → Upgrade.
-3. Telli-Anschluss: Basis-URL der AIS.chat-API (bis vor `/v1`), globaler API-Schlüssel, Modelle. Für die Wissensdateien muss der Schlüssel
-   zusätzlich ein Embedding-Modell freigegeben haben (Name in der KI-Chat-Einstellung „Embedding-Modell“, Standard `BAAI/bge-m3`).
+3. Telli-Anschluss: Basis-URL der AIS.chat-API (bis vor `/v1`), globaler API-Schlüssel. Danach „Modelle aus der API übernehmen“: Text-
+   und Embedding-Modelle eintragen, Verbindungen anlegen. Für die Wissensdateien muss der Schlüssel ein Embedding-Modell freigegeben haben
+   (z. B. `BAAI/bge-m3`); dessen Verbindung kommt in den Einsatzzweck „Embedding“ (macht der Knopf, solange dort nichts eingestellt ist).
 4. KI-Tools-Administration: Mandant einschalten, Verbindungen anlegen, Zwecke für beide Rollen zuordnen.
 5. Optional: **„AIS.chat“ statt „Telli“ anzeigen** – Website-Administration → Sprache → Sprachanpassung → Deutsch → Komponente `aitool_telli`:
    `pluginname` = „AIS.chat“, in `adddescription`, `baseurlsettingdesc`, `err_retrievingmodels`, `getconsumptiontask`, `privacy:metadata`
@@ -97,9 +106,10 @@ Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) er
 
 **Was an externe Dienste geht**
 - Chat-Fragen gehen wie bisher über den AI Manager (Protokoll, Limits, Mandant).
-- **Neu:** Für die Suche in den Wissensdateien wird die Frage an `/v1/embeddings` des Telli-Anschlusses geschickt (globale Basis-URL und
-  globaler Schlüssel von `aitool_telli`). Das geschieht erst, **nachdem der AI Manager die Chat-Anfrage zulässt** (Mandant, Sperren,
-  Kontrollzentrum, Limits). Embedding-Aufrufe erscheinen nicht im Protokoll und zählen nicht zum Kontingent (bei AIS.chat kostenlos bzw. sehr günstig).
+- **Neu:** Für die Suche in den Wissensdateien wird die Frage an das Embedding-Modell geschickt – über den Einsatzzweck „Embedding“ des
+  AI Managers (Verbindung der Schule) oder, wenn der nicht eingerichtet ist, direkt an `/v1/embeddings` des Telli-Anschlusses. Das geschieht
+  erst, **nachdem der AI Manager die Chat-Anfrage zulässt** (Schule, Sperren, Kontrollzentrum, Limits). Embedding-Aufrufe erscheinen nicht
+  im Protokoll und zählen nicht zum Kontingent (bei AIS.chat kostenlos bzw. sehr günstig).
   Zeitlimit 8 s je Frage; ist der Dienst nicht erreichbar, wird 5 Minuten lang nur per Wortvergleich gesucht.
 - Wissensdateien der Kurse/Personas und angehängte Dateien im Chat gehen als Text an das Sprachmodell.
   **Bitte in die Datenschutzhinweise aufnehmen** (Privacy-Provider meldet: Embedding-Dienst, Tabelle `block_ai_chat_quellen`, Dateien).
@@ -135,7 +145,7 @@ Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) er
 - *Zeitplan* nutzt die Zeitzone des Servers.
 - *Sprache*: Die neuen Texte sind überwiegend fest auf Deutsch geschrieben (Einstellungen mit Sprachstrings de/en). Für eine
   Veröffentlichung im Moodle-Verzeichnis müssten sie in Sprachstrings umgezogen werden.
-- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111706, block_ai_control 2025120403, local_ai_manager 2026102307, aitool_telli 2026050401).
+- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111800, block_ai_control 2025120404, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
   Bei einem späteren Wechsel zurück auf bycs-lp: Datenbank-Sicherung, Upgrade-Schritte prüfen.
 - *KI-Hinweis*: Der ausführliche Hinweis erscheint einmal je Browser, danach eine kleine Zeile unter der Eingabe – bitte prüfen, ob das der
   Transparenzpflicht (Art. 50 AI Act) in Ihrer Umsetzung genügt.

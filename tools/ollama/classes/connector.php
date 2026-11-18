@@ -103,4 +103,25 @@ class connector extends \local_ai_manager\base_connector {
         }
         return $data;
     }
+
+    /**
+     * Local extension (AIS.chat Hamburg): embeddings via Ollama's /api/embed.
+     *
+     * @param string[] $texts the texts
+     * @param int $timeout timeout in seconds
+     * @return array|null vectors or null
+     */
+    #[\Override]
+    public function embed(array $texts, int $timeout = 10): ?array {
+        if (!$texts) {
+            return null;
+        }
+        $url = preg_replace('#/api/(chat|generate)/?$#', '/api/embed', $this->get_endpoint_url());
+        $result = $this->post_json_for_embedding($url, ['model' => $this->instance->get_model_name(),
+            'input' => array_values($texts)], $timeout);
+        if (empty($result['embeddings']) || count($result['embeddings']) !== count($texts)) {
+            return null;
+        }
+        return $result['embeddings'];
+    }
 }

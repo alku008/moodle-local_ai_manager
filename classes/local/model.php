@@ -60,6 +60,9 @@ class model {
     /** @var int Whether the model supports speech-to-text. */
     private int $stt = 0;
 
+    /** @var int whether the model creates embeddings (local extension) */
+    private int $embedding = 0;
+
     /** @var ?string Temperature range as "min-max" (e.g. "0.0-1.0"), null if not supported. */
     private ?string $temperature = null;
 
@@ -99,6 +102,7 @@ class model {
         $this->imggen = (int) $record->imggen;
         $this->tts = (int) $record->tts;
         $this->stt = (int) $record->stt;
+        $this->embedding = (int) ($record->embedding ?? 0);
         $this->temperature = $record->temperature;
         $this->deprecated = (int) $record->deprecated;
     }
@@ -122,6 +126,7 @@ class model {
         $record->imggen = $this->imggen;
         $record->tts = $this->tts;
         $record->stt = $this->stt;
+        $record->embedding = $this->embedding;
         $record->temperature = $this->temperature;
         $record->deprecated = $this->deprecated;
         $record->timemodified = $now;
@@ -337,6 +342,24 @@ class model {
      */
     public function set_stt(bool $stt): void {
         $this->stt = (int) $stt;
+    }
+
+    /**
+     * Returns whether the model creates embeddings (local extension).
+     *
+     * @return bool true if the model creates embeddings
+     */
+    public function supports_embedding(): bool {
+        return (bool) $this->embedding;
+    }
+
+    /**
+     * Sets whether the model creates embeddings.
+     *
+     * @param bool $embedding true if the model creates embeddings
+     */
+    public function set_embedding(bool $embedding): void {
+        $this->embedding = (int) $embedding;
     }
 
     /**
