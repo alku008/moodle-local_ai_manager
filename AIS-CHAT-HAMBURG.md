@@ -17,7 +17,9 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    Moodle zerlegt sie in Abschnitte und berechnet Embeddings über `POST /v1/embeddings` der AIS.chat-API (Modell `BAAI/bge-m3`).
    Bei jeder Chat-Frage gehen nur die 4 passendsten Abschnitte mit der Persona-Anweisung an die KI (Kosinus-Ähnlichkeit + Wortvergleich +
    Bonus für genannte Aufgabennummern; ohne Embedding-Modell nur Wortvergleich). PDF über den mitgelieferten PHP-Leser
-   smalot/pdfparser 2.13.1 (LGPL-3.0, `thirdparty/pdfparser`, kein Programm auf dem Server nötig). Neue Tabelle `block_ai_chat_wissen`.
+   smalot/pdfparser 2.13.1 (LGPL-3.0, `thirdparty/pdfparser`, kein Programm auf dem Server nötig). Er liest nur die Textebene: Eingescannte oder abfotografierte
+   Seiten werden nicht gelesen (keine KI-Kosten); Dateien ohne lesbaren Text zeigen ⚠️ „kein lesbarer Text“ in der Verwaltung, im
+   Persona-Formular und im Kontrollzentrum. Neue Tabelle `block_ai_chat_wissen`.
    **Zwei Orte, klar beschriftet:** an der Persona („🌐 gilt in allen Kursen mit dieser Persona“) und im KI-Kontrollzentrum
    (Knopf „📚 Dateien hochladen und verwalten“, „📍 gilt nur in diesem Kurs, für jede Persona“). Bei einer Frage gehen die besten
    Abschnitte aus beiden mit.
@@ -145,7 +147,7 @@ Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) er
 - *Zeitplan* nutzt die Zeitzone des Servers.
 - *Sprache*: Die neuen Texte sind überwiegend fest auf Deutsch geschrieben (Einstellungen mit Sprachstrings de/en). Für eine
   Veröffentlichung im Moodle-Verzeichnis müssten sie in Sprachstrings umgezogen werden.
-- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111802, block_ai_control 2025120409, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
+- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111803, block_ai_control 2025120410, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
   Bei einem späteren Wechsel zurück auf bycs-lp: Datenbank-Sicherung, Upgrade-Schritte prüfen.
 - *KI-Hinweis*: Der ausführliche Hinweis erscheint einmal je Browser, danach eine kleine Zeile unter der Eingabe – bitte prüfen, ob das der
   Transparenzpflicht (Art. 50 AI Act) in Ihrer Umsetzung genügt.
