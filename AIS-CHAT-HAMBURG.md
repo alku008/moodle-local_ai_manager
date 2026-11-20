@@ -59,7 +59,8 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    wie der KI-Chat sie gelesen hat: ✅ mit Zahl der Abschnitte, ⚠️ „kein lesbarer Text“ (z. B. Scan), ⚠️ „gekürzt“ bzw. „nicht aufgenommen“,
    wenn die Höchstzahl der Abschnitte je Kurs bzw. Persona erreicht ist (neue Einstellung `wissenmaxabschnitte`, Standard 1000 – vorher fest
    400, das schnitt größere Sammlungen beim Neuspeichern ohne Hinweis ab). Nach dem Speichern bleibt die Seite offen und meldet die
-   Lesart je PDF. Das Kontrollzentrum zeigt Dateien ohne Text bzw. gekürzte Dateien an.
+   Lesart je PDF. Das Kontrollzentrum zeigt Dateien ohne Text bzw. gekürzte Dateien an. Aufbau der Seite: oben „Wissensdateien automatisch
+   aus den Kursinhalten erzeugen“, darunter Hochladen und Webseiten, ganz unten „Zurück zum Kurs“.
 14. **Optional: Bilder und Grafiken mit KI lesen (20.11.2026)** (block_ai_chat): Nur wenn **local_ai_content** (ByCS) installiert und der
    Einsatzzweck „Bild zu Text“ (itt) für den Kurs verfügbar ist. Dann fragt beim Hochladen eines PDFs ein Fenster, ob die KI Bilder,
    Grafiken und eingescannte Seiten in Text umwandeln soll (kostet je Seite eine KI-Anfrage im Namen der Person, die speichert); die Wahl
@@ -157,7 +158,7 @@ Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) er
 - *Zeitplan* nutzt die Zeitzone des Servers.
 - *Sprache*: Die neuen Texte sind überwiegend fest auf Deutsch geschrieben (Einstellungen mit Sprachstrings de/en). Für eine
   Veröffentlichung im Moodle-Verzeichnis müssten sie in Sprachstrings umgezogen werden.
-- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111807, block_ai_control 2025120411, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
+- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111808, block_ai_control 2025120411, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
   Bei einem späteren Wechsel zurück auf bycs-lp: Datenbank-Sicherung, Upgrade-Schritte prüfen.
 - *KI-Hinweis*: Der ausführliche Hinweis erscheint einmal je Browser, danach eine kleine Zeile unter der Eingabe – bitte prüfen, ob das der
   Transparenzpflicht (Art. 50 AI Act) in Ihrer Umsetzung genügt.
