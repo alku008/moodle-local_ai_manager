@@ -55,6 +55,16 @@ Die drei Zweige gehören zusammen und bauen auf diesen Ständen von github.com/b
    angerechnet**. Im KI-Kontrollzentrum gibt es dafür keinen eigenen Schalter. Ist der Einsatzzweck nicht eingerichtet, nutzt der KI-Chat
    wie bisher den Telli-Anschluss direkt mit dem Modell aus seiner Einstellung (Statuszeile in den KI-Chat-Einstellungen zeigt den Weg).
    „Modelle aus der API übernehmen“ erkennt Embedding-Modelle, legt die Verbindung an und ordnet sie dem Einsatzzweck zu.
+13. **Dateiliste mit Lesart (19./20.11.2026)** (block_ai_chat): Unter den Wissensdateien (Kurs-Seite und Persona-Formular) steht je Datei,
+   wie der KI-Chat sie gelesen hat: ✅ mit Zahl der Abschnitte, ⚠️ „kein lesbarer Text“ (z. B. Scan), ⚠️ „gekürzt“ bzw. „nicht aufgenommen“,
+   wenn die Höchstzahl der Abschnitte je Kurs bzw. Persona erreicht ist (neue Einstellung `wissenmaxabschnitte`, Standard 1000 – vorher fest
+   400, das schnitt größere Sammlungen beim Neuspeichern ohne Hinweis ab). Nach dem Speichern bleibt die Seite offen und meldet die
+   Lesart je PDF. Das Kontrollzentrum zeigt Dateien ohne Text bzw. gekürzte Dateien an.
+14. **Optional: Bilder und Grafiken mit KI lesen (20.11.2026)** (block_ai_chat): Nur wenn **local_ai_content** (ByCS) installiert und der
+   Einsatzzweck „Bild zu Text“ (itt) für den Kurs verfügbar ist. Dann fragt beim Hochladen eines PDFs ein Fenster, ob die KI Bilder,
+   Grafiken und eingescannte Seiten in Text umwandeln soll (kostet je Seite eine KI-Anfrage im Namen der Person, die speichert); die Wahl
+   lässt sich in der Dateiliste per Häkchen ändern. Bilddateien (png, jpg, webp, gif) sind dann ebenfalls als Wissensdateien erlaubt.
+   Ohne local_ai_content oder ohne Bild-Modell erscheint davon nichts, PDFs werden wie bisher nur über die Textebene gelesen.
 
 Ausführliche Begründungen und Code-Auszüge: Dokument „KI-Plugins der ByCS: Erfahrungen und Änderungsvorschläge“ (Abschnitte 1–10).
 
@@ -93,7 +103,7 @@ als Persona im KI-Chat nachbaut: `ANLEITUNG_DIALOGPARTNER_ALS_PERSONA.md` (im Zw
 
 ## JavaScript
 
-Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) erzeugt und mit ESLint geprüft (18.11.2026);
+Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) erzeugt und mit ESLint geprüft (zuletzt 20.11.2026);
 `amd/src` und `amd/build` passen zusammen, ein erneutes Bauen ist nicht nötig.
 
 ## Sicherheit und Datenschutz (geprüft 17.11.2026)
@@ -130,7 +140,7 @@ Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) er
 - Textkopien der Seiten liegen nur in `block_ai_chat_wissen` für die Suche; Lernende sehen nur Zitate der KI und den Link.
 
 **Grenzen gegen Überlastung**
-- Wissensdateien: Anzahl und MB je Datei einstellbar (Standard 5 Dateien, 5 MB), höchstens 400 Abschnitte je Kurs bzw. Persona,
+- Wissensdateien: Anzahl und MB je Datei einstellbar (Standard 5 Dateien, 5 MB), höchstens 1000 Abschnitte je Kurs bzw. Persona (Einstellung `wissenmaxabschnitte`),
   DOCX entpackt höchstens 30 MB, PDF mit erhöhtem Speicher-/Zeitlimit.
 - Chat: jede Nachricht höchstens „Zeichen je Anhang“ + 2000 Zeichen (Server-Prüfung), Anhänge pro Person und Tag.
 
@@ -147,7 +157,7 @@ Die Build-Dateien (`amd/build`) sind mit `grunt amd` (Node.js 22, Moodle 5.2) er
 - *Zeitplan* nutzt die Zeitzone des Servers.
 - *Sprache*: Die neuen Texte sind überwiegend fest auf Deutsch geschrieben (Einstellungen mit Sprachstrings de/en). Für eine
   Veröffentlichung im Moodle-Verzeichnis müssten sie in Sprachstrings umgezogen werden.
-- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111804, block_ai_control 2025120410, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
+- *Versionsnummern* liegen im Nummernraum des Herstellers (block_ai_chat 2026111807, block_ai_control 2025120411, local_ai_manager 2026102308, aitool_telli 2026050401, aipurpose_embedding 2026111800).
   Bei einem späteren Wechsel zurück auf bycs-lp: Datenbank-Sicherung, Upgrade-Schritte prüfen.
 - *KI-Hinweis*: Der ausführliche Hinweis erscheint einmal je Browser, danach eine kleine Zeile unter der Eingabe – bitte prüfen, ob das der
   Transparenzpflicht (Art. 50 AI Act) in Ihrer Umsetzung genügt.
